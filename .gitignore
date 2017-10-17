@@ -1,0 +1,11 @@
+#
+Build/
+Temp/
+
+editor.setting
+uuidHistory.setting
+
+#
+*.bin
+*.meta
+*.swp

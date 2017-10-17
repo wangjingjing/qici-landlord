@@ -1,0 +1,7 @@
+{
+  "scene": [
+    "Assets/scene/main",
+    "Assets/scene/single"
+  ],
+  "entryScene": "Assets/scene/main"
+}

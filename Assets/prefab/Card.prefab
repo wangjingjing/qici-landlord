@@ -1,0 +1,127 @@
+{
+  "class": "qc.UIImage",
+  "data": {
+    "uuid": "9daca7fc-9b4a-4e7c-ba25-d2bb9d1fccec",
+    "_prefab": [
+      7,
+      ""
+    ],
+    "__lock": [
+      5,
+      null
+    ],
+    "name": [
+      7,
+      "Card"
+    ],
+    "uniqueName": [
+      7,
+      ""
+    ],
+    "ignoreDestroy": [
+      5,
+      false
+    ],
+    "alpha": [
+      3,
+      1
+    ],
+    "visible": [
+      5,
+      true
+    ],
+    "colorTint": [
+      14,
+      16777215
+    ],
+    "static": [
+      5,
+      false
+    ],
+    "scripts": [
+      {
+        "clazz": "qc.landlord.CardUI",
+        "data": "2f263115-1407-4ada-9867-ccd3ac2550e0"
+      }
+    ],
+    "position": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      105,
+      150,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scaleX": [
+      3,
+      1
+    ],
+    "scaleY": [
+      3,
+      1
+    ],
+    "rotation": [
+      3,
+      0
+    ],
+    "interactive": [
+      5,
+      true
+    ],
+    "isFiltersThrough": [
+      5,
+      null
+    ],
+    "children": [],
+    "texture": [
+      10,
+      "Assets/atlas/poker.bin",
+      "bc6fe1da-432d-41a2-ab0f-a55554619b17",
+      "BG.jpg"
+    ],
+    "frame": [
+      7,
+      "BG.jpg"
+    ],
+    "imageType": [
+      3,
+      0
+    ],
+    "skewX": [
+      3,
+      null
+    ],
+    "skewY": [
+      3,
+      null
+    ]
+  },
+  "__json": {
+    "2f263115-1407-4ada-9867-ccd3ac2550e0": {
+      "class": "qc.landlord.CardUI",
+      "data": {
+        "uuid": [
+          7,
+          "2f263115-1407-4ada-9867-ccd3ac2550e0"
+        ],
+        "enable": true
+      }
+    }
+  },
+  "dependences": {
+    "bc6fe1da-432d-41a2-ab0f-a55554619b17": {
+      "key": "Assets/atlas/poker.bin",
+      "uuid": "bc6fe1da-432d-41a2-ab0f-a55554619b17"
+    }
+  }
+}
