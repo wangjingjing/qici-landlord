@@ -61,6 +61,7 @@ urlMapConfig = {
   "0a0ab49c-7562-4cbe-b0af-2de689d6d2e6": "Assets/atlas/poker@atlas/S9.bin",
   "384080a9-db34-4df8-a1d8-d7a2230d9359": "Assets/excel/config.bin",
   "c44b9570-1164-4459-972a-2f30ae629b41": "Assets/prefab/Card.bin",
+  "b82a4e25-3b0a-4090-b001-3a65800b2539": "Assets/prefab/playMessage.bin",
   "6b95c430-16e3-43c0-9cbc-24c1fc99a606": "Assets/scene/main.bin",
   "df6770d2-5393-4cb2-8dbb-5f8e67c06988": "Assets/scene/single.bin",
   "a131d1bc-d89e-41de-9c93-32af8504a20d": "Assets/texture/background.bin",
