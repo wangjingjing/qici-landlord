@@ -12,11 +12,10 @@
      
      // 牌管理
      G.cardManager = new qc.landlord.CardManager();
-     //游戏规则
-     //G.gameRule = new qc.landlord.GameRule();
+     // 游戏规则
+     G.gameRule = new qc.landlord.GameRule();
  
      //G.online = new qc.landlord.Online();
-     //AI逻辑
-     //G.AILogic = new qc.landlord.AILogic();
+     
      String.prototype.trim = function() {  return this.replace(/(^\s*)|(\s*$)/g,'');  };
  };

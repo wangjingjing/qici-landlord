@@ -1,4 +1,8 @@
-// define a user behaviour
+/**
+ * 玩家类型
+ * 
+ * @param {string} n 自定义名
+ */
 var Player = qc.landlord.Player = function(n){
     var self = this;
     
