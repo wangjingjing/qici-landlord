@@ -14,11 +14,26 @@ var SingleUI = qc.defineBehaviour('qc.landlord.SingleUI', qc.Behaviour, function
     this.round = 0;
     // 当前地主
     this.currentLandlord = null;
+
+    /**
+     * 用于打牌
+     */
+    // 每回合胜出的牌型对象
+    this.winCardType = null;
+    // 每回合赢得牌权的玩家
+    this.roundWinner = null;
+
+    /**
+     * 用于提示
+     */
+    this.promptTimes = 0;
     
+    window.singleUI = this;
 }, {
     // fields need to be serialized
     startBtn : qc.Serializer.NODE,                 // 开始按钮
     exitBtn : qc.Serializer.NODE,                  // 退出按钮
+    hiddenCardsContainer : qc.Serializer.NODE,     // 底牌区
     cardPrefab : qc.Serializer.PREFAB,             // 纸牌预制
     playMsgPrefab : qc.Serializer.PREFAB,          // 打牌、叫分信息预制
     ownPlayerArea : qc.Serializer.NODE,            // 玩家区域
@@ -36,13 +51,39 @@ var SingleUI = qc.defineBehaviour('qc.landlord.SingleUI', qc.Behaviour, function
     noClaimBtn : qc.Serializer.NODE,               // 不叫按钮
     gameMessage : qc.Serializer.NODE,              // 游戏消息
     scorePanel : qc.Serializer.NODE,               // 底分
-    ratePanel : qc.Serializer.NODE                 // 倍数
+    ratePanel : qc.Serializer.NODE,                // 倍数
+    passBtn : qc.Serializer.NODE,                  // 不要按钮
+    promptBtn : qc.Serializer.NODE,                // 提示按钮
+    playBtn : qc.Serializer.NODE                   // 出牌按钮
 });
 
 // Called when the script instance is being loaded.
 SingleUI.prototype.awake = function() {
 	var self = this;
     
+    /** 屏蔽浏览器右击菜单 */
+    if (window.Event) {
+        window.document.captureEvents(Event.MOUSEUP);
+    }
+    function nocontextmenu(event) {
+        event.cancelBubble = true;
+        event.returnValue = false;
+        return false;
+    }
+    function norightclick(event) {
+        if (window.Event){
+            if (event.which == 2 || event.which == 3)
+                return false;
+        } else if (event.button == 2 || event.button == 3){
+            event.cancelBubble = true;
+            event.returnValue = false;
+            return false;
+        }
+    }
+    window.document.oncontextmenu = nocontextmenu; // for IE5+
+    window.document.onmousedown = norightclick; // for all others
+    /** 屏蔽浏览器右击菜单 end*/
+
     // 设置随机开始叫地主的位置
     self.startNo = 0;
 
@@ -50,13 +91,14 @@ SingleUI.prototype.awake = function() {
     self.startBtn.onClick.add(self.startGame, self);
     self.exitBtn.onClick.add(self.exitGame, self);
     self.claimOneBtn.onClick.add(function(){
-        self.playerClaim(1)}, self);
+        self.claimScoreEvent(1)}, self);
     self.claimTwoBtn.onClick.add(function(){
-        self.playerClaim(2)}, self);
+        self.claimScoreEvent(2)}, self);
     self.claimThreeBtn.onClick.add(function(){
-        self.playerClaim(3)}, self);
+        self.claimScoreEvent(3)}, self);
     self.noClaimBtn.onClick.add(function(){
-        self.playerClaim(0)}, self);
+        self.claimScoreEvent(0)}, self);
+    self.playBtn.onClick.add(self.playCardEvent, self);
 };
 
 /**
@@ -66,7 +108,10 @@ SingleUI.prototype.startGame = function(){
     var self = this;
     
     G.hiddenCards = [];
-    // G.currentCards = [];
+    for (var i in self.hiddenCardsContainer.children) {
+        i.frame = 'bg.jpg';
+    }
+
     G.ownPlayer.cardList = [];
     self.destroyChildren(self.ownCardsContainer);
     G.formerPlayer.cardList =[];
@@ -74,12 +119,18 @@ SingleUI.prototype.startGame = function(){
     G.nextPlayer.cardList = [];
     self.destroyChildren(self.nextCardsContainer);
 
+    self.ownPlayerArea.getScript('qc.landlord.PlayerUI').header.visible = false;
+    self.formerPlayerArea.getScript('qc.landlord.PlayerUI').header.visible = false;
+    self.nextPlayerArea.getScript('qc.landlord.PlayerUI').header.visible = false;
+
     // 还原抢地主数据
     self.currentScore = 0;
     self.round = 0;
     self.currentLandlord = null;
-    // self.scorePanel.text = '0';
-    // self.ratePanel.text = '1';
+    self.scorePanel.text = '0';
+    self.ratePanel.text = '1';
+    self.winCardType = null;
+    self.roundWinner = null;
     
     self.startBtn.visible = false;
     
@@ -105,29 +156,30 @@ SingleUI.prototype.dealCards = function(){
     
     // 每人手牌数
     var total = 17;
-    
-    var deal = function (){
+
+    var deal = function(){
         
         // 上家电脑发牌
         card = cardManager.getOneCard(cards);
-        G.formerPlayer.cardList.push(card);
-        
-        var c = self.game.add.clone(self.cardPrefab, self.formerCardsContainer);
-        c.visible = true;
-        c.interactive = false;
+        // G.formerPlayer.cardList.push(card);
+        // var c = self.game.add.clone(self.cardPrefab, self.formerCardsContainer);
+        // c.visible = true;
+        // c.interactive = false;
+        self.insertCard2List(card, G.formerPlayer.cardList, self.formerCardsContainer, true);
         
         // 下家电脑发牌
         card = cardManager.getOneCard(cards);
-        G.nextPlayer.cardList.push(card);
-        
-        c = self.game.add.clone(self.cardPrefab, self.nextCardsContainer);
-        c.visible = true;
-        c.interactive = false;
-        
+        // G.nextPlayer.cardList.push(card);
+        // c = self.game.add.clone(self.cardPrefab, self.nextCardsContainer);
+        // c.visible = true;
+        // c.interactive = false;
+        self.insertCard2List(card, G.nextPlayer.cardList, self.nextCardsContainer, true);
+
         // 玩家的牌
         card = cardManager.getOneCard(cards);
         // G.ownPlayer.cardList.push(card);
-        self.insertIntoOwnerCards(card);
+        // self.insertIntoOwnerCards(card);
+        self.insertCard2List(card, G.ownPlayer.cardList, self.ownCardsContainer, true);
 
         if ( --total > 0) {
             self.dealTimer = self.game.timer.add(200, deal);
@@ -136,12 +188,9 @@ SingleUI.prototype.dealCards = function(){
             // 发牌完毕，恢复退出按钮的点击事件
             self.exitBtn.onClick.add(self.exitGame, self);
 
-            G.formerPlayer.cardList.sort(cardManager.compare);
-            G.nextPlayer.cardList.sort(cardManager.compare);
-            // G.ownPlayer.cardList.sort(G.gameRule.cardSort);
-            // for (i = 0; i < G.currentCards.length; i++) {
-            //     G.currentCards[i].getScript('qc.engine.CardUI').isSelected = false;
-            // }
+            //G.formerPlayer.cardList.sort(cardManager.compare);
+            //G.nextPlayer.cardList.sort(cardManager.compare);
+
             // 进入抢地主阶段
             self.claimLord();
         }
@@ -149,27 +198,53 @@ SingleUI.prototype.dealCards = function(){
     deal();
 };
 
-/**
- * 将card插入到玩家的有序牌组中
- * @param  {Card} card [description]
- * @return {[type]}      [description]
- */
-SingleUI.prototype.insertIntoOwnerCards = function(card){
-    var self = this,
-        insertIndex = 0,
-        currentCards = G.ownPlayer.cardList;
+// /**
+//  * 将card插入到玩家的有序牌组中
+//  * @param  {Card} card [description]
+//  * @return {[type]}      [description]
+//  */
+// SingleUI.prototype.insertIntoOwnerCards = function(card){
+//     var self = this,
+//         insertIndex = 0,
+//         currentCards = G.ownPlayer.cardList;
     
-    if(currentCards.length > 0 && 
-        G.cardManager.compare(card, currentCards[0]) > 0) { // 牌值小或花色值大
-        
-        insertIndex = G.cardManager.getIndex(currentCards, card);
+//     if(currentCards.length > 0 && 
+//         G.cardManager.compare(card, currentCards[0]) > 0) { // 牌值小或花色值大
+//         insertIndex = G.cardManager.getIndex(currentCards, card);
+//     }
+
+//     currentCards.splice(insertIndex, 0, card);
+
+//     var c = self.game.add.clone(self.cardPrefab, self.ownCardsContainer);
+//     self.ownCardsContainer.setChildIndex(c, insertIndex);
+//     c.getScript('qc.landlord.CardUI').show(card);
+// };
+
+/**
+ * 将牌插入到指定玩家的有序牌组中
+ * @param  {Card} card           待插入的牌
+ * @param  {Array} cardList      要插入的牌数组
+ * @param  {Node} cardsContainer 显示牌组的牌区
+ * @return {[type]}                [description]
+ */
+SingleUI.prototype.insertCard2List = function(card, cardList, cardsContainer, showFlag) {
+    var self = this,
+        insertIndex = 0;
+
+    if(cardList.length > 0 &&
+        G.cardManager.compare(card, cardList[0]) > 0) {
+
+        insertIndex = G.cardManager.getIndex(cardList, card);
     }
 
-    currentCards.splice(insertIndex, 0, card);
+    cardList.splice(insertIndex, 0, card);
 
-    var c = self.game.add.clone(self.cardPrefab, self.ownCardsContainer);
-    self.ownCardsContainer.setChildIndex(c, insertIndex);
-    c.getScript('qc.landlord.CardUI').show(card);
+    var c = self.game.add.clone(self.cardPrefab, cardsContainer);
+    cardsContainer.setChildIndex(c, insertIndex);
+
+    if(showFlag) {
+        c.getScript('qc.landlord.CardUI').show(card);
+    }
 };
 
 /**
@@ -191,7 +266,7 @@ SingleUI.prototype.claimLord = function(){
 };
 
 /**
- * [claimScore description]
+ * 叫分
  * @param  {Player} player [description]
  * @return {[type]}        [description]
  */
@@ -226,7 +301,7 @@ SingleUI.prototype.claimScore = function(player){
                 self.currentLandlord = player;
 
                 if(ratingScore === 3){ // 三分得地主
-                    self.setLandlord(player);
+                    self.confirmLandlord(player);
                     return;
                 }
 
@@ -239,7 +314,7 @@ SingleUI.prototype.claimScore = function(player){
 
                 if(self.currentLandlord){
                     // 最后叫分的得地主
-                    self.setLandlord(self.currentLandlord);
+                    self.confirmLandlord(self.currentLandlord);
 
                 } else {
                     self.game.timer.add(1000, function(){
@@ -268,11 +343,11 @@ SingleUI.prototype.claimScore = function(player){
 };
 
 /**
- * 玩家叫分
+ * 叫分按钮触发函数
  * @param  {int} score [description]
  * @return {[type]}       [description]
  */
-SingleUI.prototype.playerClaim = function(score){
+SingleUI.prototype.claimScoreEvent = function(score){
     var self = this;
 
     self.noClaimBtn.visible = false;
@@ -299,7 +374,7 @@ SingleUI.prototype.playerClaim = function(score){
         self.currentLandlord = G.ownPlayer;
 
         if(score === 3){ // 三分得地主
-            self.setLandlord(G.ownPlayer);
+            self.confirmLandlord(G.ownPlayer);
             return;
         }
 
@@ -311,7 +386,7 @@ SingleUI.prototype.playerClaim = function(score){
 
         if(self.currentLandlord){
             // 最后叫分的得地主
-            self.setLandlord(self.currentLandlord);
+            self.confirmLandlord(self.currentLandlord);
 
         } else {
             self.game.timer.add(1000, function(){
@@ -326,13 +401,47 @@ SingleUI.prototype.playerClaim = function(score){
 };
 
 /**
- * [setLandlord description]
- * @param {[type]} player [description]
+ * 确定地主
+ * @param {Player} player [description]
  */
-SingleUI.prototype.setLandlord = function(player){
+SingleUI.prototype.confirmLandlord = function(player){
     var self = this;
 
+    G.ownPlayer.isLandlord = false;
+    G.formerPlayer.isLandlord = false;
+    G.nextPlayer.isLandlord = false;
+    player.isLandlord = true;
+
+    // 显示头像，农民还是地主
+    self.ownPlayerArea.getScript('qc.landlord.PlayerUI').setHeaderPic(
+        G.ownPlayer.isLandlord);
+    self.formerPlayerArea.getScript('qc.landlord.PlayerUI').setHeaderPic(
+        G.formerPlayer.isLandlord);
+    self.nextPlayerArea.getScript('qc.landlord.PlayerUI').setHeaderPic(
+        G.nextPlayer.isLandlord);
+
+    var playerCardContainer;
+    if(G.ownPlayer.isLandlord) {
+        playerCardContainer = self.ownCardsContainer;
+    }else if(G.formerPlayer.isLandlord) {
+        playerCardContainer = self.formerCardsContainer;
+    }else if(G.nextPlayer.isLandlord) {
+        playerCardContainer = self.nextCardsContainer;
+    }else {
+        self.game.log.error('逻辑错误，未确定地主！');
+    }
+
+    // 显示底牌，并把底牌发给地主
+    for (var i = 0; i < G.hiddenCards.length; i++) {
+        self.hiddenCardsContainer.children[i].frame = G.hiddenCards[i].icon;
+        self.insertCard2List(G.hiddenCards[i], player.cardList,
+            playerCardContainer, !player.isAI);
+    }
+
     console.info('地主确定：' + player.name);
+
+    self.clearAllCardsArea();
+    self.playCard(player);
 };
 
 /**
@@ -362,9 +471,124 @@ SingleUI.prototype.destroyChildren = function(parent) {
 SingleUI.prototype.clearAllCardsArea = function (){
     var self = this;
 
-    destroyChildren(self.ownCardsArea);
-    destroyChildren(self.formerCardsArea);
-    destroyChildren(self.nextCardsArea);
+    self.destroyChildren(self.ownCardsArea);
+    self.destroyChildren(self.formerCardsArea);
+    self.destroyChildren(self.nextCardsArea);
+};
+
+/**
+ * [playCard description]
+ * @param  {[type]} player [description]
+ * @return {[type]}        [description]
+ */
+SingleUI.prototype.playCard = function(player) {
+    var self = this;
+
+    if(player.isAI) {
+        // TODO
+        
+    } else {
+
+        // 清除上次出的牌
+        self.destroyChildren(self.ownCardsArea);
+
+        if(self.getSelectedCardsType()) {
+            self.playBtn.state = qc.UIState.NORMAL;
+        } else {
+            self.playBtn.state = qc.UIState.DISABLED;
+        }
+
+        self.playBtn.visible = true;
+        self.promptBtn.visible = true;
+
+        if(self.roundWinner && self.roundWinner !== player) {
+            self.passBtn.visible = true;
+        } else {
+            self.winCardType = null;
+        }
+
+        self.promptTimes = 0;
+    }
+};
+
+/**
+ * “出牌”按钮点击事件
+ * @return {[type]} [description]
+ */
+SingleUI.prototype.playCardEvent = function() {
+    var self = this,
+        ownCardType = self.getSelectedCardsType();
+
+    if(ownCardType) { // 牌型正确，可以出牌
+
+        if(ownCardType.type === G.gameRule.JOKER_BOMB
+            || ownCardType.type === G.gameRule.BOMB) {
+            var rate = parseInt(self.ratePanel.text, 10);
+            self.ratePanel.text = (rate * 2) + '';
+        }
+
+        self.winCardType = ownCardType;
+        self.roundWinner = G.ownPlayer;
+
+        // TODO
+
+        if(G.ownPlayer.cardList.length === 0) {
+            self.judgeWinner(G.ownPlayer);
+        } else {
+            self.playCard(G.ownPlayer.nextPlayer);
+        }
+    }
+};
+
+/**
+ * 获取已选出的牌的牌型
+ * 如果是跟牌，牌要大过要跟的牌
+ * 
+ * @return {[type]} [description]
+ */
+SingleUI.prototype.getSelectedCardsType = function(){
+    var self = this,
+        readyCards = [],
+        ownCardUIList = self.ownCardsContainer.children;
+
+    for(var i in ownCardUIList) {
+        var cardUI = ownCardUIList[i].getScript('qc.landlord.CardUI');
+        if(cardUI.isSelected) {
+            readyCards.push(cardUI.cardObj);
+        }
+    }
+
+    if(readyCards.length === 0) {
+        return;
+    }
+
+    var cardType = G.gameRule.judgeCardType(readyCards);
+
+    if(cardType) { // 牌型正确
+        if(self.roundWinner && self.roundWinner !== G.ownPlayer) { // 跟牌
+            
+            return (function(winCardType, ownCardType) {
+                // 王炸大过其他牌型
+                // 炸弹大过非炸弹
+                // 同牌型且同长度时牌值大
+                if(ownCardType.type === G.gameRule.JOKER_BOMB
+                    || (ownCardType.type === G.gameRule.BOMB
+                        && winCardType.type !== G.gameRule.BOMB)
+                    || (ownCardType.type === winCardType.type
+                        && ownCardType.size === winCardType.size
+                        && ownCardType.value > winCardType.value)) {
+
+                    return cardType;
+                }
+
+            }(self.winCardType, cardType));
+
+        } else {
+            return cardType;
+        }
+    }
+
+    return;
 };
 
 /**

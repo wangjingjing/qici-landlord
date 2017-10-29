@@ -1,24 +1,18 @@
-// define a user behaviour
+/**
+ * 纸牌UI，处理牌的显示、点击等
+ */
 var CardUI = qc.defineBehaviour('qc.landlord.CardUI', qc.Behaviour, function() {
-    // need this behaviour be scheduled in editor
-    //this.runInEditor = true;
+    this.isSelected = false;
+    this.cardObj = null;
 }, {
     // fields need to be serialized
 });
 
-// Called when the script instance is being loaded.
-//CardUI.prototype.awake = function() {
-//
-//};
-
-// Called every frame, if the behaviour is enabled.
-//CardUI.prototype.update = function() {
-//
-//};
-
-/**
-  * 显示纸牌，
-  * @property card 卡牌信息，
+ /**
+  * 显示纸牌
+  * 
+  * @param  {Card} card [description]
+  * @return {[type]}      [description]
   */
 CardUI.prototype.show = function(card){
     var self = this,
@@ -26,12 +20,14 @@ CardUI.prototype.show = function(card){
 
     o.frame = card.icon;
     o.resetNativeSize();
-    //o.visible = true;
+    self.cardObj = card;
 };
 
 /**
-  * 选中纸牌，纸牌上移
-  */
+ * 选中纸牌，纸牌上移
+ * 
+ * @return {[type]} [description]
+ */
 CardUI.prototype.onClick = function (){
     var self = this;
 
@@ -43,8 +39,8 @@ CardUI.prototype.onClick = function (){
 
     self.isSelected = !self.isSelected;
 
-    var ui = window.landlordUI ? window.landlordUI : window.olLandlordUI;
-    if(ui.getReadyCardsKind()){
+    var ui = window.singleUI ? window.singleUI : window.onlineUI;
+    if(ui.getSelectedCardsType()){
         ui.playBtn.state = qc.UIState.NORMAL;
     } else {
         ui.playBtn.state = qc.UIState.DISABLED;

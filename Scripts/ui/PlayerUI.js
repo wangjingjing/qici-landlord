@@ -1,4 +1,6 @@
-// define a user behaviour
+/**
+ * 玩家UI，处理头像
+ */
 var PlayerUI = qc.defineBehaviour('qc.landlord.PlayerUI', qc.Behaviour, function() {
     // need this behaviour be scheduled in editor
     //this.runInEditor = true;
@@ -18,3 +20,10 @@ var PlayerUI = qc.defineBehaviour('qc.landlord.PlayerUI', qc.Behaviour, function
 //PlayerUI.prototype.update = function() {
 //
 //};
+
+PlayerUI.prototype.setHeaderPic = function(isLandlord) {
+    var self = this;
+
+    self.header.frame = isLandlord ? 'landlord.png' : 'peasant.png';
+    self.header.visible = true;
+};

@@ -1,4 +1,6 @@
-// define a user behaviour
+/**
+ * 入口场景UI
+ */
 var MainUI = qc.defineBehaviour('qc.landlord.MainUI', qc.Behaviour, function() {
     // need this behaviour be scheduled in editor
     //this.runInEditor = true;
