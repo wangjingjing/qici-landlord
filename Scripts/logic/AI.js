@@ -18,64 +18,146 @@ AI.prototype.analyze = function() {
 
     console.info('原牌：' + self.cards);
 
+    console.info('手牌分析一：王炸->顺子->炸弹->连对->飞机->三张->对->单');
     cardAnalysis = self.analyzePath_1(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     score = cardAnalysis.getRatingScore();
     self.cardAnalysis = cardAnalysis;
-    console.info('手牌分析一：');
     console.info(cardAnalysis);
-    console.info(cardAnalysis.getRatingScore());
+    
 
+    console.info('手牌分析二：王炸->顺子->炸弹->飞机->三张->连对->对->单');
     cardAnalysis = self.analyzePath_2(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     if(cardAnalysis.getRatingScore() > score) {
         self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
     }
-    console.info('手牌分析二：');
     console.info(cardAnalysis);
-    console.info(cardAnalysis.getRatingScore());
 
+    console.info('手牌分析三：王炸->顺子->炸弹->飞机->连对->三张->对->单');
     cardAnalysis = self.analyzePath_3(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     if(cardAnalysis.getRatingScore() > score) {
         self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
     }
-    console.info('手牌分析三：');
     console.info(cardAnalysis);
-    console.info(cardAnalysis.getRatingScore());
 
+    console.info('手牌分析四：王炸->炸弹->顺子->连对->飞机->三张->对->单');
     cardAnalysis = self.analyzePath_4(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     if(cardAnalysis.getRatingScore() > score) {
         self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
     }
-    console.info('手牌分析四：');
     console.info(cardAnalysis);
-    console.info(cardAnalysis.getRatingScore());
 
+    console.info('手牌分析五：王炸->炸弹->顺子->飞机->三张->连对->对->单');
     cardAnalysis = self.analyzePath_5(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     if(cardAnalysis.getRatingScore() > score) {
         self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
     }
-    console.info('手牌分析五：');
     console.info(cardAnalysis);
-    console.info(cardAnalysis.getRatingScore());
 
+    console.info('手牌分析六：王炸->炸弹->顺子->飞机->连对->三张->对->单');
     cardAnalysis = self.analyzePath_6(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     if(cardAnalysis.getRatingScore() > score) {
         self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
     }
-    console.info('手牌分析六：');
     console.info(cardAnalysis);
-    console.info(cardAnalysis.getRatingScore());
 
+    console.info('手牌分析七：王炸->炸弹->连对->顺子->飞机->三张->对->单');
     cardAnalysis = self.analyzePath_7(self.cards);
+    console.info(cardAnalysis.getRatingScore());
     if(cardAnalysis.getRatingScore() > score) {
         self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
     }
-    console.info('手牌分析七：');
     console.info(cardAnalysis);
+    
+    console.info('手牌分析八：王炸->炸弹->连对->飞机->顺子->三张->对->单');
+    cardAnalysis = self.analyzePath_8(self.cards);
     console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析九：王炸->炸弹->连对->飞机->三张->顺子->对->单');
+    cardAnalysis = self.analyzePath_9(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析十：王炸->炸弹->飞机->顺子->三张->连对->对->单');
+    cardAnalysis = self.analyzePath_10(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析十一：王炸->炸弹->飞机->顺子->连对->三张->对->单');
+    cardAnalysis = self.analyzePath_11(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析十二：王炸->炸弹->飞机->三张->顺子->连对->对->单');
+    cardAnalysis = self.analyzePath_12(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析十三：王炸->炸弹->飞机->三张->连对->顺子->对->单');
+    cardAnalysis = self.analyzePath_13(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析十四：王炸->炸弹->飞机->连对->顺子->三张->对->单');
+    cardAnalysis = self.analyzePath_14(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('手牌分析十五：王炸->炸弹->飞机->连对->三张->顺子->对->单');
+    cardAnalysis = self.analyzePath_15(self.cards);
+    console.info(cardAnalysis.getRatingScore());
+    if(cardAnalysis.getRatingScore() > score) {
+        self.cardAnalysis = cardAnalysis;
+        score = cardAnalysis.getRatingScore();
+    }
+    console.info(cardAnalysis);
+    
+    console.info('最终手牌：');
+    console.info(self.cardAnalysis);
 };
 
 /**
- * 王炸->顺子->炸弹->飞机->连对->三张->对->单
+ * 王炸->顺子->炸弹->连对->飞机->三张->对->单
  * @return {CardAnalysis} 牌型分析结果对象
  */
 AI.prototype.analyzePath_1 = function(cards) {
@@ -87,8 +169,8 @@ AI.prototype.analyzePath_1 = function(cards) {
     self.getJokerBomb(cardsCopy, ca);
     self.getStraight(cardsCopy, ca);
     self.getBomb(cardsCopy, ca);
-    self.getPlane(cardsCopy, ca);
     self.getDoubleStright(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
     self.getTriple(cardsCopy, ca);
     self.getPair(cardsCopy, ca);
     self.getSingle(cardsCopy, ca);
@@ -119,7 +201,7 @@ AI.prototype.analyzePath_2 = function(cards) {
 };
 
 /**
- * 王炸->炸弹->顺子->飞机->连对->三张->对->单
+ * 王炸->顺子->炸弹->飞机->连对->三张->对->单
  * @return {CardAnalysis} 牌型分析结果对象
  */
 AI.prototype.analyzePath_3 = function(cards) {
@@ -129,8 +211,8 @@ AI.prototype.analyzePath_3 = function(cards) {
     var ca = new qc.landlord.CardAnalysis();
     self.getJokerAndTwo(cardsCopy, ca);
     self.getJokerBomb(cardsCopy, ca);
-    self.getBomb(cardsCopy, ca);
     self.getStraight(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
     self.getPlane(cardsCopy, ca);
     self.getDoubleStright(cardsCopy, ca);
     self.getTriple(cardsCopy, ca);
@@ -139,8 +221,9 @@ AI.prototype.analyzePath_3 = function(cards) {
 
     return ca;
 };
+
 /**
- * 王炸->炸弹->顺子->飞机->三张->连对->对->单
+ * 王炸->炸弹->顺子->连对->飞机->三张->对->单
  * @return {CardAnalysis} 牌型分析结果对象
  */
 AI.prototype.analyzePath_4 = function(cards) {
@@ -152,9 +235,9 @@ AI.prototype.analyzePath_4 = function(cards) {
     self.getJokerBomb(cardsCopy, ca);
     self.getBomb(cardsCopy, ca);
     self.getStraight(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
     self.getPlane(cardsCopy, ca);
     self.getTriple(cardsCopy, ca);
-    self.getDoubleStright(cardsCopy, ca);
     self.getPair(cardsCopy, ca);
     self.getSingle(cardsCopy, ca);
 
@@ -162,7 +245,7 @@ AI.prototype.analyzePath_4 = function(cards) {
 };
 
 /**
- * 王炸->炸弹->飞机->连对->三张->顺子->对->单
+ * 王炸->炸弹->顺子->飞机->三张->连对->对->单
  * @return {CardAnalysis} 牌型分析结果对象
  */
 AI.prototype.analyzePath_5 = function(cards) {
@@ -173,10 +256,10 @@ AI.prototype.analyzePath_5 = function(cards) {
     self.getJokerAndTwo(cardsCopy, ca);
     self.getJokerBomb(cardsCopy, ca);
     self.getBomb(cardsCopy, ca);
-    self.getPlane(cardsCopy, ca);
-    self.getDoubleStright(cardsCopy, ca);
-    self.getTriple(cardsCopy, ca);
     self.getStraight(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
     self.getPair(cardsCopy, ca);
     self.getSingle(cardsCopy, ca);
 
@@ -184,7 +267,7 @@ AI.prototype.analyzePath_5 = function(cards) {
 };
 
 /**
- * 王炸->炸弹->飞机->三张->连对->顺子->对->单
+ * 王炸->炸弹->顺子->飞机->连对->三张->对->单
  * @return {CardAnalysis} 牌型分析结果对象
  */
 AI.prototype.analyzePath_6 = function(cards) {
@@ -195,10 +278,120 @@ AI.prototype.analyzePath_6 = function(cards) {
     self.getJokerAndTwo(cardsCopy, ca);
     self.getJokerBomb(cardsCopy, ca);
     self.getBomb(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
     self.getPlane(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
     self.getTriple(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->连对->顺子->飞机->三张->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_7 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
     self.getDoubleStright(cardsCopy, ca);
     self.getStraight(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->连对->飞机->顺子->三张->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_8 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->连对->飞机->三张->顺子->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_9 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->飞机->顺子->三张->连对->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_10 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->飞机->顺子->连对->三张->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_11 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
     self.getPair(cardsCopy, ca);
     self.getSingle(cardsCopy, ca);
 
@@ -209,7 +402,7 @@ AI.prototype.analyzePath_6 = function(cards) {
  * 王炸->炸弹->飞机->三张->顺子->连对->对->单
  * @return {CardAnalysis} 牌型分析结果对象
  */
-AI.prototype.analyzePath_7 = function(cards) {
+AI.prototype.analyzePath_12 = function(cards) {
     var self = this,
         cardsCopy = cards.slice(0);
 
@@ -228,7 +421,73 @@ AI.prototype.analyzePath_7 = function(cards) {
 };
 
 /**
- * [getJokerAndTwo description]
+ * 王炸->炸弹->飞机->三张->连对->顺子->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_13 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->飞机->连对->顺子->三张->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_14 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 王炸->炸弹->飞机->连对->三张->顺子->对->单
+ * @return {CardAnalysis} 牌型分析结果对象
+ */
+AI.prototype.analyzePath_15 = function(cards) {
+    var self = this,
+        cardsCopy = cards.slice(0);
+
+    var ca = new qc.landlord.CardAnalysis();
+    self.getJokerAndTwo(cardsCopy, ca);
+    self.getJokerBomb(cardsCopy, ca);
+    self.getBomb(cardsCopy, ca);
+    self.getPlane(cardsCopy, ca);
+    self.getDoubleStright(cardsCopy, ca);
+    self.getTriple(cardsCopy, ca);
+    self.getStraight(cardsCopy, ca);
+    self.getPair(cardsCopy, ca);
+    self.getSingle(cardsCopy, ca);
+
+    return ca;
+};
+
+/**
+ * 获取大王、小王和2
  * @param  {[type]} cards        [description]
  * @param  {[type]} cardAnalysis [description]
  * @return {[type]}              [description]
@@ -268,7 +527,7 @@ AI.prototype.getBomb = function(cards, cardAnalysis) {
         if(vc[i].count === 4) {
             var cardType = new qc.landlord.CardType(G.gameRule.BOMB, vc[i].value, []);
             this.moveSpecValueCard(cards, cardType.cards, vc[i].value);
-            cardAnalysis.bomb.push(cardType);
+            cardAnalysis.bomb.splice(0, 0, cardType);
         }
     }
 };
@@ -375,6 +634,8 @@ AI.prototype.getStraight = function(cards, cardAnalysis) {
         // 保存潜在可能组成顺子的牌，牌值由小到大
         var tmp = [];
 
+        // console.info(cards + '');
+
         // 牌值由小到大循环
         for(var i = cards.length - 1; i >= 0; i--) {
             var len = tmp.length;
@@ -393,6 +654,7 @@ AI.prototype.getStraight = function(cards, cardAnalysis) {
                     // 只取长度为5的顺子
                     straightArrays.push(tmp);
                     tmp = [];
+                    break; // 一旦凑成五连则从最小的牌再次开始找顺子
                 }
             } else {
                 // 牌值间隔在2及以上，则清空tmp从新开始分析
@@ -585,7 +847,7 @@ AI.prototype.getSingle = function(cards, cardAnalysis) {
     for(var i in cards) {
         var singleType = new qc.landlord.CardType(
             G.gameRule.SINGLE, cards[i].value, [cards[i]]);
-        cardAnalysis.single.push(singleType);
+        cardAnalysis.single.splice(0, 0, singleType);
     }
 };
 
@@ -614,13 +876,13 @@ AI.prototype.moveSpecValueCard = function(from, to, val, mount) {
 };
 
 /**
- * [getCardsRating description]
- * @return {[type]} [description]
+ * 根据手牌分析评分来叫分
+ * @return {int} 对评分/2向上取整
  */
 AI.prototype.getCardsRating = function() {
     var self = this,
         score = self.cardAnalysis.getRatingScore(),
-        result = G.game.math.floorTo(score / 2);
+        result = G.game.math.ceilTo(score / 2);
 
     if(result > 3) {
         result = 3;
@@ -630,3 +892,28 @@ AI.prototype.getCardsRating = function() {
 
     return result;
 }
+
+/**
+ * [playCard description]
+ * @return {CardType} [description]
+ */
+AI.prototype.playCard = function() {
+    var self = this;
+
+    if(self.cards.length === 20) { // 第一张
+        return self.cardAnalysis.getFirstCards();
+
+    } else {
+
+    }
+};
+
+/**
+ * [followCard description]
+ * @return {[type]} [description]
+ */
+AI.prototype.followCard = function() {
+    var self = this;
+
+    console.info('------跟牌------');
+};

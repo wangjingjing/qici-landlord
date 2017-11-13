@@ -57,7 +57,11 @@ CardManager.prototype.compare = function(a, b){
         vb = b.value;
     
     if(va === vb){
-        return a.type > b.type ? 1 : -1;
+        if(a.type === b.type) {
+            return 0;
+        } else{
+            return a.type > b.type ? 1 : -1;
+        }
     } else if(va < vb){
         return 1;
     } else {
@@ -71,13 +75,12 @@ CardManager.prototype.compare = function(a, b){
  * 否则返回card在有序数组中应插入的位置
  * 
  * @param  {Array} cards 有序牌数组
- * @param  {Card} card  要插入的牌对象
- * @return {int}       返回牌应该插入有序数组中的位置
+ * @param  {Card} card   要插入的牌对象
+ * @return {int}         返回牌应该插入有序数组中的位置
  */
-CardManager.prototype.getIndex = function(cards, card) {
-    var self = this;
-    
-    var low = 0,
+CardManager.prototype.getInsertIndex = function(cards, card) {
+    var self = this,
+        low = 0,
         high = cards.length;
     
     if(high === 0 || self.compare(card, cards[0]) < 0) {
@@ -113,3 +116,27 @@ CardManager.prototype.getIndex = function(cards, card) {
     }
 };
 
+/**
+ * 获取牌组中某张牌的位置
+ * 
+ * @param  {Array} cards 有序牌数组
+ * @param  {Card} card   要删除的牌对象
+ * @return {int}         返回待删除的牌在牌组中的位置
+ */
+CardManager.prototype.getDeleteIndex = function(cards, card) {
+    var self = this,
+        low = 0,
+        high = cards.length;
+
+    while(low <= high) {
+        var middle = low + G.game.math.floorTo((high - low) / 2);
+
+        if(self.compare(card, cards[middle]) > 0) {
+            low = middle + 1;
+        } else if(self.compare(card, cards[middle]) < 0) {
+            high = middle - 1;
+        } else {
+            return middle;
+        }
+    }
+};
