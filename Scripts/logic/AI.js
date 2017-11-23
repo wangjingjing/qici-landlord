@@ -658,14 +658,15 @@ AI.prototype.getStraight = function(cards, cardAnalysis) {
                 }
             } else {
                 // 牌值间隔在2及以上，则清空tmp从新开始分析
-                restCards = restCards.concat(tmp);
+                Array.prototype.push.apply(restCards, tmp);
                 tmp = [];
                 tmp.push(cards.splice(i, 1)[0]);
             }
         }
 
         if(tmp.length > 0) {
-            restCards = restCards.concat(tmp);
+            // restCards = restCards.concat(tmp);
+            Array.prototype.push.apply(restCards, tmp);
         }
 
         // 递归分析直到cards中没有牌
@@ -904,7 +905,15 @@ AI.prototype.playCard = function() {
         return self.cardAnalysis.getFirstCards();
 
     } else {
+        var handsCount = self.cardAnalysis.countHandsOut();
+        console.info('手数：' + handsCount);
 
+        if(handsCount === 1) {
+            return self.cardAnalysis.handCards[0];
+
+        } else {
+            console.info(self.cardAnalysis.handCards);
+        }
     }
 };
 

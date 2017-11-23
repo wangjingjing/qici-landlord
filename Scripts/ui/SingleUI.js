@@ -98,6 +98,8 @@ SingleUI.prototype.awake = function() {
         self.claimScoreEvent(3)}, self);
     self.noClaimBtn.onClick.add(function(){
         self.claimScoreEvent(0)}, self);
+    self.passBtn.onClick.add(self.passEvent, self);
+    // self.promptBtn.onClick.add(self., self);
     self.playBtn.onClick.add(self.playCardEvent, self);
 };
 
@@ -449,7 +451,8 @@ SingleUI.prototype.confirmLandlord = function(player){
     for (var i = 0; i < G.hiddenCards.length; i++) {
         self.hiddenCardsContainer.children[i].frame = G.hiddenCards[i].icon;
         self.insertCard2List(G.hiddenCards[i], player.cardList,
-            playerCardContainer, !player.isAI);
+            // playerCardContainer, !player.isAI);
+            playerCardContainer, true);
     }
 
     console.info('地主确定：' + player.name);
@@ -502,6 +505,9 @@ SingleUI.prototype.playCard = function(player) {
         var ai = new qc.landlord.AI(player);
         var area = player.nextPlayer.isAI ? self.nextCardsArea : self.formerCardsArea;
         var playerCardContainer = player.nextPlayer.isAI ? self.nextCardsContainer : self.formerCardsContainer;
+
+        // 清除上次出的牌
+        self.destroyChildren(area);
 
         self.game.timer.add(1000, function(){
 
@@ -646,6 +652,33 @@ SingleUI.prototype.getSelectedCardsType = function(){
     }
 
     return;
+};
+
+
+/**
+ * “不要”按钮点击事件
+ */
+SingleUI.prototype.passEvent = function() {
+    var self = this;
+    self.restoreOwnCards();
+    self.game.add.clone(self.playMsgPrefab, self.ownCardsArea);
+    self.playCard(G.ownPlayer.nextPlayer);
+};
+
+/**
+ * [restoreOwnCards description]
+ * @return {[type]} [description]
+ */
+SingleUI.prototype.restoreOwnCards = function(){
+    var ownCardUIList = this.ownCardsContainer.children;
+
+    for (var i in ownCardUIList) {
+        var cardUI = ownCardUIList[i].getScript('qc.landlord.CardUI');
+        if(cardUI.isSelected){
+            cardUI.anchoredY = 0;
+            cardUI.isSelected = false;
+        }
+    }
 };
 
 /**
